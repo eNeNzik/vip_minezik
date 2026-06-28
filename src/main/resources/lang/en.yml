@@ -30,8 +30,14 @@ vip-promotion:
 
 local-chat:
   login-required: "&cLog in before using chat."
-  no-one-heard: "&7No one heard you, there are no players nearby. Type ! before the message to send it to the general chat"
+  no-one-heard: "&7No one heard you, there are no players nearby."
+  toggle-suggestion: "&eType /chattogle to switch chat mode"
+  toggle-hover: "&aClick to run /chattogle"
   msg-hover: "&aClick to message %player%"
+
+chat-toggle:
+  global-default: "&aChat mode changed: &enormal messages go to global chat&7, &e! &7before a message sends it to local chat."
+  local-default: "&aChat mode changed: &enormal messages go to local chat&7, &e! &7before a message sends it to global chat."
 
 language:
   usage: "&7Usage: &e/vip language <auto/ua/en/ru/pl/de>"

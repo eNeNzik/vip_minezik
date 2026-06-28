@@ -28,6 +28,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.view.AnvilView;
 
+import java.net.URI;
 import java.util.UUID;
 
 public class PlayerListener implements Listener {
@@ -42,6 +43,15 @@ public class PlayerListener implements Listener {
         this.nickColorManager = nickColorManager;
         this.vipCommand = vipCommand;
     }
+
+    @EventHandler
+    public void onPlayerLinksSend(PlayerLinksSendEvent event) {
+        event.getLinks().addLink(
+                net.kyori.adventure.text.Component.text("Minezik", net.kyori.adventure.text.format.NamedTextColor.GREEN),
+                URI.create("https://minezik.com.ua/")
+        );
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

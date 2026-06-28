@@ -242,6 +242,34 @@ public final class Vip extends JavaPlugin {
             return List.of();
         }
 
+        if (args.length == 0) {
+            args = new String[]{""};
+        }
+
         return plugin.vipTabCompleter.onTabComplete(sender, null, "vip", args);
+    }
+
+    static boolean toggleChatMode(CommandSender sender) {
+        Vip plugin = instance;
+        if (plugin == null) {
+            sender.sendMessage(ChatColor.RED + "VIP plugin is still loading.");
+            return true;
+        }
+
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(plugin.getLang().get(sender, "common.only-player"));
+            return true;
+        }
+
+        String path = "players." + player.getUniqueId() + ".chat-local-default";
+        boolean localByDefault = !plugin.getPlayerData().getBoolean(path, false);
+        plugin.getPlayerData().set(path, localByDefault);
+        plugin.savePlayerData();
+
+        player.sendMessage(plugin.getLang().get(
+                player,
+                localByDefault ? "chat-toggle.local-default" : "chat-toggle.global-default"
+        ));
+        return true;
     }
 }

@@ -27,8 +27,6 @@ public final class VipBootstrap implements PluginBootstrap {
 
     private static final TypedKey<Dialog> MINEZIK_PAUSE_DIALOG_KEY =
             RegistryKey.DIALOG.typedKey(Key.key("vip", "minezik_pause"));
-    private static final TypedKey<Dialog> MINEZIK_QUICK_ACTION_DIALOG_KEY =
-            RegistryKey.DIALOG.typedKey(Key.key("vip", "minezik_quick_action"));
 
     @Override
     public void bootstrap(BootstrapContext context) {
@@ -37,7 +35,7 @@ public final class VipBootstrap implements PluginBootstrap {
     }
 
     private void registerCommand(BootstrapContext context) {
-        context.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event ->
+        context.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
                 event.registrar().register(
                         context.getConfiguration(),
                         "vip",
@@ -54,21 +52,32 @@ public final class VipBootstrap implements PluginBootstrap {
                                 return Vip.completeVipCommand(source.getSender(), args);
                             }
                         }
-                )
-        );
+                );
+                event.registrar().register(
+                        context.getConfiguration(),
+                        "chattogle",
+                        "Toggle default chat mode",
+                        List.of("chattoggle"),
+                        new BasicCommand() {
+                            @Override
+                            public void execute(CommandSourceStack source, String[] args) {
+                                Vip.toggleChatMode(source.getSender());
+                            }
+                        }
+                );
+        });
     }
 
     private void registerDialogs(BootstrapContext context) {
         context.getLifecycleManager().registerEventHandler(RegistryEvents.DIALOG.compose(), event -> {
             registerMinezikMenuDialog(event.registry(), MINEZIK_PAUSE_DIALOG_KEY);
-            registerMinezikMenuDialog(event.registry(), MINEZIK_QUICK_ACTION_DIALOG_KEY);
         });
 
         context.getLifecycleManager().registerEventHandler(
                 LifecycleEvents.TAGS.postFlatten(RegistryKey.DIALOG),
                 event -> {
                     event.registrar().addToTag(DialogTagKeys.PAUSE_SCREEN_ADDITIONS, List.of(MINEZIK_PAUSE_DIALOG_KEY));
-                    event.registrar().addToTag(DialogTagKeys.QUICK_ACTIONS, List.of(MINEZIK_QUICK_ACTION_DIALOG_KEY));
+                    event.registrar().addToTag(DialogTagKeys.QUICK_ACTIONS, List.of(MINEZIK_PAUSE_DIALOG_KEY));
                 }
         );
     }
@@ -109,21 +118,17 @@ public final class VipBootstrap implements PluginBootstrap {
     }
 
     private Component minezikLogo() {
-        return Component.text()
-                .append(Component.text("M", NamedTextColor.RED))
+        return Component.text("M", NamedTextColor.RED)
                 .append(Component.text("i", NamedTextColor.GOLD))
                 .append(Component.text("n", NamedTextColor.YELLOW))
                 .append(Component.text("e", NamedTextColor.GREEN))
                 .append(Component.text("z", NamedTextColor.BLUE))
                 .append(Component.text("i", NamedTextColor.DARK_BLUE))
-                .append(Component.text("k", NamedTextColor.DARK_PURPLE))
-                .build();
+                .append(Component.text("k", NamedTextColor.DARK_PURPLE));
     }
 
     private Component minezikMenuText() {
-        return Component.text()
-                .append(minezikLogo())
-                .append(Component.text(" menu", NamedTextColor.YELLOW))
-                .build();
+        return minezikLogo()
+                .append(Component.text(" menu", NamedTextColor.YELLOW));
     }
 }

@@ -31,8 +31,14 @@ vip-promotion:
 
 local-chat:
   login-required: "&cLog in before using chat."
-  no-one-heard: "&7Вас никто не услышал, рядом нет игроков. Напишите ! перед сообщением, чтобы отправить его в общий чат"
+  no-one-heard: "&7Вас никто не услышал, рядом нет игроков."
+  toggle-suggestion: "&eНапишите /chattogle, чтобы переключить режим чата"
+  toggle-hover: "&aНажмите, чтобы выполнить /chattogle"
   msg-hover: "&fНажми, чтобы написать /msg %player%"
+
+chat-toggle:
+  global-default: "&aРежим чата изменён: &eобычное сообщение - глобальный чат&7, &e! &7перед сообщением - локальный чат."
+  local-default: "&aРежим чата изменён: &eобычное сообщение - локальный чат&7, &e! &7перед сообщением - глобальный чат."
 
 language:
   usage: "&7Использование: &e/vip language <auto/ua/en/ru/pl/de>"

@@ -7,6 +7,10 @@ commands:
   vip:
     usage: /vip <args>
     description: повертає посилання на сайт покуок та відкриває донат-панель
+  chattogle:
+    usage: /chattogle
+    description: Toggles default chat mode
+    aliases: [chattoggle]
 permissions:
   vip.vip:
     description: Дозволяє використовувати /vip

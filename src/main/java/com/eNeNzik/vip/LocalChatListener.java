@@ -47,8 +47,10 @@ public class LocalChatListener implements Listener {
             return;
         }
 
-        boolean global = rawMessage.startsWith("!");
-        String message = global ? rawMessage.substring(1).trim() : rawMessage;
+        boolean prefixed = rawMessage.startsWith("!");
+        boolean localByDefault = isLocalByDefault(sender);
+        boolean global = localByDefault ? prefixed : !prefixed;
+        String message = prefixed ? rawMessage.substring(1).trim() : rawMessage;
 
         if (message.isBlank()) {
             return;
@@ -94,8 +96,22 @@ public class LocalChatListener implements Listener {
         );
 
         if (!global && !someoneNearby) {
-            sender.sendMessage(plugin.getLang().get(sender, "local-chat.no-one-heard"));
+            sendNoOneHeard(sender);
         }
+    }
+
+    private void sendNoOneHeard(Player sender) {
+        sender.sendMessage(plugin.getLang().get(sender, "local-chat.no-one-heard"));
+
+        TextComponent toggle = new TextComponent(plugin.getLang().get(sender, "local-chat.toggle-suggestion"));
+        toggle.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/chattogle"));
+        toggle.setHoverEvent(new HoverEvent(
+                HoverEvent.Action.SHOW_TEXT,
+                new ComponentBuilder(plugin.getLang().get(sender, "local-chat.toggle-hover"))
+                        .color(net.md_5.bungee.api.ChatColor.GREEN)
+                        .create()
+        ));
+        sender.spigot().sendMessage(toggle);
     }
 
     private TextComponent createChatLine(Player receiver, Player sender, String message, boolean global) {
@@ -157,5 +173,9 @@ public class LocalChatListener implements Listener {
 
     private boolean hasVip(Player player) {
         return player.hasPermission("vip.vip") || player.hasPermission("vip.vip_plus");
+    }
+
+    private boolean isLocalByDefault(Player player) {
+        return plugin.getPlayerData().getBoolean("players." + player.getUniqueId() + ".chat-local-default", false);
     }
 }
