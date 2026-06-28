@@ -1,0 +1,16 @@
+name: vip
+version: '1.0-SNAPSHOT'
+main: com.eNeNzik.vip.Vip
+api-version: '1.21'
+softdepend: [SafeLogin]
+commands:
+  vip:
+    usage: /vip <args>
+    description: повертає посилання на сайт покуок та відкриває донат-панель
+permissions:
+  vip.vip:
+    description: Дозволяє використовувати /vip
+    default: false
+  vip.vip_plus:
+    description: Дозволяє використовувати /vip
+    default: false
